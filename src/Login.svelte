@@ -1,0 +1,23 @@
+<script>
+    import Profile from './Profile.svelte'
+    import Todos from './Todos.svelte'
+    import {auth,googleProvider} from './firebase'
+    import {authState} from 'rxfire/auth'
+
+    let user;
+
+    const unsubscribe= authState(auth).subscribe(u=>user=u)
+
+    function login() {
+    auth.signInWithPopup(googleProvider);
+    }
+</script>
+
+<section>
+
+    {#if user}
+    <Profile {...user} />
+    {:else}
+        <button on:click={login}>Sign with Google.</button>
+    {/if}
+</section>
